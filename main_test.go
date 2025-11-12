@@ -13,18 +13,16 @@ func TestWatchFolderCreate(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	watcherFunc := func (err error) bool {
-        return false
-    }
-    go func() {
+	go func() {
 		filePath := filepath.Join(tempDir, "test.pdf")
 		file, err := os.Create(filePath)
 		t.Logf("Created file: %s", file.Name())
-    	if err != nil {
-    	    t.Errorf("Error creating file: %v\n", err)
-    	}
-    	defer file.Close()
-    }()
+		if err != nil {
+			t.Errorf("Error creating file: %v\n", err)
+		}
 
-    WatchFolderCreate(tempDir, watcherFunc)
+		defer file.Close()
+	}()
+
+	WatchFolder(tempDir)
 }

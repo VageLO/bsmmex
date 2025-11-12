@@ -1,6 +1,12 @@
 schema = 3
 
 [mod]
+  [mod."github.com/VageLO/pdf-parse"]
+    version = "v0.0.0-20251112155532-fddf8c1f9358"
+    hash = "sha256-Bn7OMTQjW2i5PVUleEzdtxPMwp8RT4D4BxNZAb84lrY="
+  [mod."github.com/dslipak/pdf"]
+    version = "v0.0.2"
+    hash = "sha256-E+RC2+HIdj5xyC+QGikVt4GAhtFu6hgeuVska3Hg71g="
   [mod."github.com/fsnotify/fsnotify"]
     version = "v1.9.0"
     hash = "sha256-WtpE1N6dpHwEvIub7Xp/CrWm0fd6PX7MKA4PV44rp2g="
