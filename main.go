@@ -79,5 +79,5 @@ func main() {
 	// Create a logger that outputs to syslog
 	syslogLogger = log.New(syslogWriter, "SYSLOG: ", log.Ldate|log.Ltime)
 	// TODO: refine
-	WatchFolder("~/Workflow/statements")
+	WatchFolder("/home/vagelo/Workflow/statements")
 }
