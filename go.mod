@@ -3,7 +3,7 @@ module bsmmex
 go 1.24.10
 
 require (
-	github.com/VageLO/pdf-parse v0.0.0-20251112155532-fddf8c1f9358
+	github.com/VageLO/bsparse v1.0.0
 	github.com/fsnotify/fsnotify v1.9.0
 )
 

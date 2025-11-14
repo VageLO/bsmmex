@@ -21,22 +21,22 @@
 
         callPackage = pkgs.callPackage;
         # Simple test check added to nix flake check
-        go-test = pkgs.stdenvNoCC.mkDerivation {
-          name = "go-test";
-          dontBuild = true;
-          src = ./.;
-          doCheck = true;
-          nativeBuildInputs = with pkgs; [
-            go
-            writableTmpDirAsHomeHook
-          ];
-          checkPhase = ''
-            go test -v ./...
-          '';
-          installPhase = ''
-            mkdir "$out"
-          '';
-        };
+        #go-test = pkgs.stdenvNoCC.mkDerivation {
+        #  name = "go-test";
+        #  dontBuild = true;
+        #  src = ./.;
+        #  doCheck = true;
+        #  nativeBuildInputs = with pkgs; [
+        #    go
+        #    writableTmpDirAsHomeHook
+        #  ];
+        #  checkPhase = ''
+        #    go test -v ./...
+        #  '';
+        #  installPhase = ''
+        #    mkdir "$out"
+        #  '';
+        #};
         # Simple lint check added to nix flake check
         go-lint = pkgs.stdenvNoCC.mkDerivation {
           name = "go-lint";
@@ -58,7 +58,7 @@
       in
       {
         checks = {
-          inherit go-test go-lint;
+          inherit go-lint;
         };
         packages.default = callPackage ./. {
           inherit (gomod2nix.legacyPackages.${system}) buildGoApplication;

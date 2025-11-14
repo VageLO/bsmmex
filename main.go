@@ -2,12 +2,15 @@ package main
 
 import (
 	"log"
+	"log/syslog"
 	"path/filepath"
 	"strings"
 
-	pdf "github.com/VageLO/pdf-parse"
+	"github.com/VageLO/bsparse/parse"
 	"github.com/fsnotify/fsnotify"
 )
+
+var syslogLogger *log.Logger
 
 // Watch for CREATE event in specified folder
 func WatchFolder(folder string) {
@@ -23,12 +26,12 @@ func WatchFolder(folder string) {
 	// Start listening for events.
 	go watchLoop(watcher)
 
-	log.Printf("Start watching folder %s", folder)
+	syslogLogger.Printf("Start watching folder %s", folder)
 
 	// Add a path.
 	err = watcher.Add(folder)
 	if err != nil {
-		log.Println("error:", err)
+		syslogLogger.Println("error:", err)
 	}
 
 	<-make(chan struct{})
@@ -42,23 +45,24 @@ func watchLoop(w *fsnotify.Watcher) {
 				return
 			}
 
-			log.Println("EVENT:", event)
+			syslogLogger.Println("EVENT:", event)
 
 			if event.Has(fsnotify.Create) {
 				ext := filepath.Ext(event.Name)
 				if !strings.EqualFold(ext, ".pdf") {
-					log.Println("WARNING:", "file extension is not .pdf")
+					syslogLogger.Println("WARNING:", "file extension is not .pdf")
 					continue
 				}
 
-				log.Printf("Processing file %s", event.Name)
-				// TODO: import pdf-parse repo function
-				transactions := pdf.GetTransactions(event.Name)
-				pdf.Csv(transactions)
+				syslogLogger.Printf("Processing file %s", event.Name)
+				transactions := bsparse.GetTransactions(event.Name)
+
+				syslogLogger.Println("Saving csv file")
+				bsparse.Csv(transactions)
 			}
 		case err, ok := <-w.Errors:
 			if !ok {
-				log.Println("ERROR:", err)
+				syslogLogger.Println("ERROR:", err)
 				return
 			}
 		}
@@ -66,5 +70,14 @@ func watchLoop(w *fsnotify.Watcher) {
 }
 
 func main() {
-	WatchFolder("./")
+	syslogWriter, err := syslog.New(syslog.LOG_NOTICE|syslog.LOG_DAEMON, "bsmmex")
+	if err != nil {
+		log.Fatalf("Failed to connect to syslog: %v", err)
+	}
+	defer syslogWriter.Close()
+
+	// Create a logger that outputs to syslog
+	syslogLogger = log.New(syslogWriter, "SYSLOG: ", log.Ldate|log.Ltime)
+	// TODO: refine
+	WatchFolder("~/Workflow/statements")
 }
