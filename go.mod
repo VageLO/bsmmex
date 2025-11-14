@@ -1,4 +1,4 @@
-module bsmmex
+module github.com/VageLO/bsmmex
 
 go 1.24.10
 
