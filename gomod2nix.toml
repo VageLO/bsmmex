@@ -2,14 +2,17 @@ schema = 3
 
 [mod]
   [mod."github.com/VageLO/bsparse"]
-    version = "v1.0.0"
-    hash = "sha256-2W+L/stBro1TzG74cBsjuKtCKAX3zrGPUVC6LR5sAtg="
+    version = "v1.0.1"
+    hash = "sha256-JB71AlhwRYh6cxI/OQTxxih6phRJd9TIv3YpJrApy08="
   [mod."github.com/dslipak/pdf"]
     version = "v0.0.2"
     hash = "sha256-E+RC2+HIdj5xyC+QGikVt4GAhtFu6hgeuVska3Hg71g="
   [mod."github.com/fsnotify/fsnotify"]
     version = "v1.9.0"
     hash = "sha256-WtpE1N6dpHwEvIub7Xp/CrWm0fd6PX7MKA4PV44rp2g="
+  [mod."github.com/mattn/go-sqlite3"]
+    version = "v1.14.32"
+    hash = "sha256-su0SoXnt5pE78t5VXFXQoH2dtP0ohWdyj3TNSZQyWE0="
   [mod."golang.org/x/sys"]
     version = "v0.13.0"
     hash = "sha256-/+RDZ0a0oEfJ0k304VqpJpdrl2ZXa3yFlOxy4mjW7w0="
