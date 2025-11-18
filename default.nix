@@ -15,7 +15,7 @@
 
 buildGoApplication {
   pname = "bsmmex";
-  version = "1.0.2";
+  version = "1.0.1";
   pwd = ./.;
   src = ./.;
   modules = ./gomod2nix.toml;
