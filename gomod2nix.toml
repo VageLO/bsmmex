@@ -4,6 +4,12 @@ schema = 3
   [mod."github.com/VageLO/bsparse"]
     version = "v1.0.1"
     hash = "sha256-JB71AlhwRYh6cxI/OQTxxih6phRJd9TIv3YpJrApy08="
+  [mod."github.com/cespare/xxhash/v2"]
+    version = "v2.3.0"
+    hash = "sha256-7hRlwSR+fos1kx4VZmJ/7snR7zHh8ZFKX+qqqqGcQpY="
+  [mod."github.com/dgryski/go-rendezvous"]
+    version = "v0.0.0-20200823014737-9f7001d12a5f"
+    hash = "sha256-n/7xo5CQqo4yLaWMSzSN1Muk/oqK6O5dgDOFWapeDUI="
   [mod."github.com/dslipak/pdf"]
     version = "v0.0.2"
     hash = "sha256-E+RC2+HIdj5xyC+QGikVt4GAhtFu6hgeuVska3Hg71g="
@@ -13,6 +19,9 @@ schema = 3
   [mod."github.com/mattn/go-sqlite3"]
     version = "v1.14.32"
     hash = "sha256-su0SoXnt5pE78t5VXFXQoH2dtP0ohWdyj3TNSZQyWE0="
+  [mod."github.com/redis/go-redis/v9"]
+    version = "v9.16.0"
+    hash = "sha256-b8jsaSCLIKthKU+yNcpQ3uv8f6QHjy8aAtEf3k6xdzc="
   [mod."golang.org/x/sys"]
     version = "v0.13.0"
     hash = "sha256-/+RDZ0a0oEfJ0k304VqpJpdrl2ZXa3yFlOxy4mjW7w0="

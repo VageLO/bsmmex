@@ -9,20 +9,19 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"context"
 
 	"github.com/VageLO/bsparse/parse"
 	"github.com/fsnotify/fsnotify"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/redis/go-redis/v9"
 )
+
+var ctx = context.Background()
 
 var syslogLogger *log.Logger
 
 var mmexFile string
-
-type CATEGORY_V1 struct {
-	CATEGID int64
-	CATEGNAME string
-}
 
 // Watch for CREATE event in specified folder
 func WatchFolder(folder string) {
@@ -126,7 +125,26 @@ func uploadToMMEX(transactions bsparse.TransactionSlice) {
 		STATUS, TRANSACTIONNUMBER, NOTES, CATEGID, TRANSDATE
 		) VALUES (?, -1, ?, ?, ?, '', '', ?, ?, ?)
 	`
+
+	// Create Redis client
+	rdb := redis.NewClient(&redis.Options{
+        Addr:     "localhost:6379",
+        Password: "",
+        DB:       0,
+    })
+
 	for index, transaction := range transactions {
+		// Get key from redis
+		mmexId, err := rdb.Get(ctx, transaction.Id).Result()
+		if err == redis.Nil {
+			syslogLogger.Printf("%s does not exist in redis", transaction.Id)
+		} else if err != nil {
+			syslogLogger.Panicln(err)
+		} else {
+			syslogLogger.Printf("Skipping %s transaction because it's already exist, ID=%s", transaction.Id, mmexId)
+			continue
+		}
+
 		syslogLogger.Printf("Inserting %d transaction: %s", index+1, transaction.Id)
 
 		typeOf := "Withdrawal"
@@ -151,7 +169,13 @@ func uploadToMMEX(transactions bsparse.TransactionSlice) {
 			syslogLogger.Println(err)
 			return
 		}
-		syslogLogger.Printf("Inserted ID - %d in database", insertedId)
+		syslogLogger.Printf("Inserted ID - %d in mmex database", insertedId)
+
+		err = rdb.Set(ctx, transaction.Id, insertedId, 0).Err()
+		if err != nil {
+			syslogLogger.Panicln(err)
+		}
+		syslogLogger.Printf("Key %s set with value %d", transaction.Id, insertedId)
 	}
 }
 
